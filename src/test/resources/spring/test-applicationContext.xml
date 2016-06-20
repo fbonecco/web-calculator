@@ -1,0 +1,50 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+  xmlns:cache="http://www.springframework.org/schema/cache"
+  xsi:schemaLocation="
+    http://www.springframework.org/schema/beans 
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    
+    http://www.springframework.org/schema/cache
+    http://www.springframework.org/schema/cache/spring-cache.xsd
+   
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context.xsd">
+
+  <context:component-scan base-package="com.upwork.webcalculator" />
+
+  <cache:annotation-driven />
+
+  <!-- An instance of the ApplicationContextUtils class -->
+  <bean class="com.upwork.webcalculator.util.ApplicationContextUtils" />
+
+  <!-- As we are testing the cache, we declare it as a proxied bean so we 
+    can easily replace it using an ApplicationContextUtils even after the context 
+    is set up -->
+  <bean id="defaultCache" class="org.springframework.cache.support.SimpleCacheManager">
+    <property name="caches">
+      <set>
+        <bean
+          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+          name="add" />
+        <bean
+          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+          name="subtract" />
+        <bean
+          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+          name="multiply" />
+        <bean
+          class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"
+          name="divide" />
+      </set>
+    </property>
+  </bean>
+  <bean id="cacheTargetSource"
+    class="org.springframework.aop.target.HotSwappableTargetSource">
+    <constructor-arg ref="defaultCache" />
+  </bean>
+  <bean id="cacheManager" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="targetSource" ref="cacheTargetSource" />
+  </bean>
+
+</beans>
