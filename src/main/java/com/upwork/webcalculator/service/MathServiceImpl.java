@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 /**
- * Implementation of {@link MathService}
+ * Implementation of {@link MathService}. Each methods is marked as cacheable using Spring's
+ * {@link Cacheable} annotation. If a valid cache manager is registered within Spring's context then
+ * it will be used for caching operations from this class.
  * 
  * @author fbonecco
  *

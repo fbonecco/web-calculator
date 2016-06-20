@@ -168,14 +168,14 @@ public class OperationResourceTest extends JerseyTest {
    */
   @Test
   public void testMultiply3() {
-    Builder request = prepareForRequest("/multiply/-1/2/0");
+    Builder request = prepareForRequest("/multiply/-1/2/0.5");
 
     Response response = request.get();
     assertEquals(200, response.getStatus());
 
     OperationResult actualResult = response.readEntity(new GenericType<OperationResult>() {});
     assertEquals(OperationType.MULTIPLY, actualResult.getType());
-    assertEquals(0D, actualResult.getResult(), 0D);
+    assertEquals(-1D, actualResult.getResult(), 0D);
   }
 
   /**

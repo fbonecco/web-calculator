@@ -47,7 +47,7 @@ public class OperationResource {
    */
   @GET
   @Produces({MediaType.APPLICATION_JSON})
-  @Path("{operation: add|subtract|multiply}/{num1}/{num2}{p:/?}{num3: ([0-9]+)?}")
+  @Path("{operation: add|subtract|multiply}/{num1}/{num2}{p:/?}{num3: ([\\.\\-0-9]+)?}")
   public OperationResult doCommon(@Context UriInfo ui, @PathParam("num1") double num1,
       @PathParam("num2") double num2, @PathParam("num3") double num3) {
     // the expression defined in the Path annotation let us mark the third parameter as optional (as
